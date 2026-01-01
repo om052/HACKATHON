@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Student Login | Smart Classroom</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #434343, #000000);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    /* Glass Card */
+    .login-card {
+      width: 100%;
+      max-width: 380px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(15px);
+      border-radius: 18px;
+      padding: 35px 30px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-card h2 {
+      text-align: center;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .login-card p {
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.85;
+      margin-bottom: 30px;
+    }
+
+    /* Input Group */
+    .input-group {
+      position: relative;
+      margin-bottom: 22px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 8px;
+      outline: none;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    .input-group label {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.8);
+      pointer-events: none;
+      transition: 0.3s ease;
+      padding: 0 6px;
+    }
+
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+      top: -8px;
+      font-size: 0.75rem;
+      background: #000;
+    }
+
+    /* Button */
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      background: #e0e0e0;
+      color: #000;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .login-btn:hover {
+      background: #f2f2f2;
+    }
+
+    .back-link {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    .back-link a {
+      color: #fff;
+      text-decoration: underline;
+      opacity: 0.9;
+    }
+
+    .error {
+      font-size: 0.8rem;
+      color: #ffd1d1;
+      text-align: center;
+      margin-bottom: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+    <h2>Student Login</h2>
+    <p>View Your Class Timetable</p>
+
+    <div class="error" id="errorMsg">Please fill all fields</div>
+
+    <div class="input-group">
+      <input type="text" id="name" placeholder=" " />
+      <label>Student Name</label>
+    </div>
+
+    <div class="input-group">
+      <input type="email" id="email" placeholder=" " />
+      <label>Email Address</label>
+    </div>
+
+    <div class="input-group">
+      <input type="password" id="password" placeholder=" " />
+      <label>Password</label>
+    </div>
+
+    <button class="login-btn" onclick="studentLogin()">Login</button>
+
+    <div class="back-link">
+      <a href="index.html">← Back to Home</a>
+    </div>
+  </div>
+
+  <script>
+    function studentLogin() {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const errorMsg = document.getElementById("errorMsg");
+
+      if (!name || !email || !password) {
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      const studentUser = {
+        name: name,
+        email: email,
+        role: "student"
+      };
+
+      localStorage.setItem("currentUser", JSON.stringify(studentUser));
+
+      // Redirect to Student Dashboard (next page)
+      window.location.href = "student-dashboard.html";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Teacher Registration | Smart Classroom</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #11998e, #38ef7d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    /* Glass Card */
+    .register-card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 35px 30px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .register-card h2 {
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .register-card p {
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.85;
+      margin-bottom: 28px;
+    }
+
+    /* Inputs */
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 10px;
+      outline: none;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    .input-group label {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.8);
+      pointer-events: none;
+      transition: 0.3s ease;
+      padding: 0 6px;
+    }
+
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+      top: -8px;
+      font-size: 0.75rem;
+      background: #11998e;
+    }
+
+    /* Password strength */
+    .strength {
+      height: 6px;
+      width: 100%;
+      background: rgba(255,255,255,0.3);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .strength div {
+      height: 100%;
+      width: 0%;
+      background: red;
+      transition: width 0.3s ease;
+    }
+
+    /* Button */
+    .register-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      background: #43e97b;
+      color: #000;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .register-btn:hover {
+      background: #5af29a;
+    }
+
+    .back-link {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    .back-link a {
+      color: #fff;
+      text-decoration: underline;
+      opacity: 0.9;
+    }
+
+    .success {
+      display: none;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #eaffea;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="register-card">
+    <h2>Teacher Registration</h2>
+    <p>Create your Smart Classroom account</p>
+
+    <div class="success" id="successMsg">Registration successful! Redirecting…</div>
+
+    <div class="input-group">
+      <input type="text" id="name" placeholder=" " />
+      <label>Full Name</label>
+    </div>
+
+    <div class="input-group">
+      <input type="email" id="email" placeholder=" " />
+      <label>Email Address</label>
+    </div>
+
+    <div class="input-group">
+      <input type="password" id="password" placeholder=" " oninput="checkStrength()" />
+      <label>Password</label>
+    </div>
+
+    <div class="strength">
+      <div id="strengthBar"></div>
+    </div>
+
+    <button class="register-btn" onclick="registerTeacher()">Register</button>
+
+    <div class="back-link">
+      <a href="index.html">← Back to Home</a>
+    </div>
+  </div>
+
+  <script>
+    function checkStrength() {
+      const password = document.getElementById("password").value;
+      const bar = document.getElementById("strengthBar");
+
+      let strength = 0;
+      if (password.length >= 6) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+
+      if (strength === 0) {
+        bar.style.width = "0%";
+      } else if (strength === 1) {
+        bar.style.width = "33%";
+        bar.style.background = "red";
+      } else if (strength === 2) {
+        bar.style.width = "66%";
+        bar.style.background = "orange";
+      } else {
+        bar.style.width = "100%";
+        bar.style.background = "#43e97b";
+      }
+    }
+
+    function registerTeacher() {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!name || !email || !password) return;
+
+      const teachers = JSON.parse(localStorage.getItem("teachers")) || [];
+
+      teachers.push({
+        name,
+        email,
+        role: "teacher"
+      });
+
+      localStorage.setItem("teachers", JSON.stringify(teachers));
+
+      document.getElementById("successMsg").style.display = "block";
+
+      setTimeout(() => {
+        window.location.href = "teacher-login.html";
+      }, 1200);
+    }
+  </script>
+
+</body>
+</html>
