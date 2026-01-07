@@ -10,6 +10,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins}
 body{background:#f4f6fb;padding:20px}
+
 header{
   background:linear-gradient(135deg,#4f46e5,#6366f1);
   color:#fff;
@@ -19,6 +20,7 @@ header{
   justify-content:space-between;
   align-items:center;
 }
+
 .logout{
   background:#ef4444;
   border:none;
@@ -27,19 +29,26 @@ header{
   border-radius:20px;
   cursor:pointer;
 }
+
 .container{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:20px;
   margin-top:20px;
 }
+
 .card{
   background:#fff;
   padding:20px;
   border-radius:14px;
   box-shadow:0 10px 20px rgba(0,0,0,.08);
 }
-.card h2{margin-bottom:10px;font-size:18px}
+
+.card h2{
+  margin-bottom:10px;
+  font-size:18px;
+}
+
 select,textarea,button{
   width:100%;
   padding:10px;
@@ -47,26 +56,21 @@ select,textarea,button{
   border-radius:8px;
   border:1px solid #d1d5db;
 }
+
 button{
   background:#4f46e5;
   color:#fff;
   border:none;
   cursor:pointer;
 }
+
 .timetable p,.notice p{
   background:#eef2ff;
   padding:10px;
   border-radius:8px;
   margin-top:8px;
 }
-.ai-response{
-  margin-top:12px;
-  background:#f9fafb;
-  padding:10px;
-  border-radius:8px;
-  min-height:70px;
-  font-size:14px;
-}
+
 .attendance span{
   display:inline-block;
   background:#22c55e;
@@ -76,6 +80,16 @@ button{
   margin-top:10px;
   font-weight:600;
 }
+
+.ai-response{
+  margin-top:12px;
+  background:#f9fafb;
+  padding:10px;
+  border-radius:8px;
+  min-height:70px;
+  font-size:14px;
+}
+
 footer{
   margin-top:30px;
   text-align:center;
@@ -90,8 +104,8 @@ footer{
 <script>
 /* 🔐 AUTH PROTECTION */
 const user = JSON.parse(localStorage.getItem("currentUser"));
-if(!user || user.role!=="student"){
-  location.href="index.html";
+if(!user || user.role !== "student"){
+  location.href = "index.html";
 }
 </script>
 
@@ -105,41 +119,43 @@ if(!user || user.role!=="student"){
 
 <div class="container">
 
-<!-- TIMETABLE -->
+<!-- 📅 TIMETABLE -->
 <div class="card">
   <h2>📅 Timetable</h2>
 
   <select id="yearSelect" onchange="loadTimetable()">
     <option value="">-- Select Year --</option>
-    <option value="FY">First Year</option>
-    <option value="SY">Second Year</option>
-    <option value="TY">Third Year</option>
-    <option value="BE">Final Year</option>
+    <option value="FE">First Year (FE)</option>
+    <option value="SE">Second Year (SE)</option>
+    <option value="TE">Third Year (TE)</option>
+    <option value="BE">Final Year (BE)</option>
   </select>
 
   <div class="timetable" id="timetableData"></div>
 </div>
 
-<!-- ATTENDANCE -->
+<!-- 📊 ATTENDANCE -->
 <div class="card attendance">
   <h2>📊 Attendance</h2>
   <p>Your overall attendance</p>
   <span>82% Present</span>
 </div>
 
-<!-- ANNOUNCEMENTS -->
+<!-- 📢 ANNOUNCEMENTS -->
 <div class="card notice">
   <h2>📢 Announcements</h2>
   <p>Mid-term exams start next week</p>
   <p>Project review on Friday</p>
 </div>
 
-<!-- GEMINI AI -->
+<!-- 🤖 GEMINI AI -->
 <div class="card">
   <h2>🤖 Gemini AI Assistant</h2>
   <textarea id="question" placeholder="Ask about lecture, syllabus, exam, timetable..."></textarea>
   <button onclick="askGemini()">Ask Gemini</button>
-  <div class="ai-response" id="response">Gemini response will appear here</div>
+  <div class="ai-response" id="response">
+    Gemini response will appear here
+  </div>
 </div>
 
 </div>
@@ -149,6 +165,7 @@ if(!user || user.role!=="student"){
 </footer>
 
 <script>
+/* USER NAME */
 studentName.innerText = user.name;
 
 /* LOAD TIMETABLE FROM ADMIN */
@@ -168,23 +185,26 @@ function loadTimetable(){
   });
 }
 
-/* 🤖 GEMINI (FRONTEND SAFE) */
+/* 🤖 GEMINI AI (SIMULATION) */
 function askGemini(){
   const q = question.value.trim();
-  if(!q) return response.innerText="Please enter a question";
+  if(!q){
+    response.innerText = "Please enter a question";
+    return;
+  }
 
-  response.innerText="Analyzing with Gemini AI...";
+  response.innerText = "Analyzing with Gemini AI...";
 
   setTimeout(()=>{
     response.innerText =
-      "Gemini AI: Focus on core concepts, revise examples, and practice previous questions.";
+      "Gemini AI: Focus on core concepts, revise examples, and practice previous year questions.";
   },1200);
 }
 
 /* LOGOUT */
 function logout(){
   localStorage.removeItem("currentUser");
-  location.href="index.html";
+  location.href = "index.html";
 }
 </script>
 
